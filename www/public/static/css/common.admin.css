@@ -1,0 +1,22 @@
+/*用于admin模块中的项目自定义css*/
+/*整个页面的页脚部分 适用于登录页*/
+.page-footer{
+	background: #fff;
+	padding: 15px;
+	border-top: 1px solid #d2d6de;
+	font-family:tahoma,Arial;
+	color:#999;
+	line-height:160%;
+	bottom:0;
+	position:absolute; 
+	left:0; 
+	right:0; 
+	width:100%; 
+	z-index:99
+}
+.page-footer a,.page-footer a:hover{
+	color:#444
+}
+.ellipsis {
+	overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
