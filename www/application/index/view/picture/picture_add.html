@@ -1,0 +1,128 @@
+{extend name="frame/template/bootstrap_frame"/}
+{block name="body"}
+<form method="post" enctype="multipart/form-data" class="form-horizontal">
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>选择空间</label>
+		<div class="col-sm-9">
+			<select name="bucket_name" class="form-control">
+				{volist name="bucketlist" id="vo"}
+				<option value="{$vo.bucket_name}" 
+				{empty name="bucket"}
+					{eq name="vo.bucket_default" value="1"} selected="true" {/eq}
+				{else/}
+					{eq name="vo.bucket_name" value="$bucket"} selected="true" {/eq}
+				{/empty}
+				>{$vo.bucket_name}</option>
+				{/volist}
+			</select>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>图片文件</label>
+		<div class="col-sm-9">
+			<input type="file" class="form-control" placeholder="请选择图片文件" id="picture_file" name="picture_file" accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" required />
+		</div>
+	</div>
+	<div class="form-group">
+		<lable class="control-label col-sm-3">图片标题</lable>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" placeholder="给图片设定一个标题，空白默认文件名" id="picture_name" name="picture_name" />
+		</div>
+	</div>
+	<div class="form-group">
+		<lable class="control-label col-sm-3">图片描述</lable>
+		<div class="col-sm-9">
+			<input type="text" class="form-control" placeholder="给图片编辑一段描述" id="picture_description" name="picture_description" />
+		</div>
+	</div>
+	<div class="form-group">
+		<lable class="control-label col-sm-3">权限保护</lable>
+		<div class="col-sm-9">
+			<label>
+				<input type="checkbox" id="picture_protected" name="picture_protected" />
+				勾选表示设置权限保护（轻易不要勾选）
+			</label>			
+		</div>
+	</div>
+	<div class="form-group">
+		<div class="col-sm-9 col-sm-offset-3">
+			<button type="submit" class="btn btn-success disabled" disabled="true">提交数据</button>
+		</div>
+	</div>
+</form>
+{/block}
+
+{block name="js"}
+{include file="frame/include/js-jquery-validation"/}
+<script type="text/javascript">
+	$(function() {
+		// 初始化checkbox的icheck样式
+		$('input[type="checkbox"]').iCheck({
+			checkboxClass: 'icheckbox_minimal-blue',
+			radioClass   : 'iradio_minimal-blue'
+	    })
+
+		// 只有当表单中有数据变化时，提交按钮才可用
+		$("form").children().bind('input propertychange ifChecked ifUnchecked',function() {
+			$(":submit").removeClass('disabled').removeAttr('disabled');
+		});
+
+		$("form").validate({
+			rules: {
+				
+			},
+			submitHandler: function(form) {
+				// 当验证通过时执行ajax提交
+				upload();
+			}
+		});
+	});
+
+	function upload() {
+		var formData = new FormData();
+	    var file = $("[name='picture_file']")[0].files[0];
+        formData.append("picture_file", file);
+        formData.append("bucket_name", $("[name='bucket_name']").val());
+        formData.append("picture_name", $("[name='picture_name']").val());
+        formData.append("picture_description", $("[name='picture_description']").val());
+        formData.append("picture_protected", $("[name='picture_protected']").is(':checked') ? 1 : 0);
+        $.ajax({
+            url: "{:url('index/picture/do_picture_add')}",
+            type: 'POST',
+            data: formData,
+            // 告诉jQuery不要去处理发送的数据
+            processData: false,
+            // 告诉jQuery不要去设置Content-Type请求头
+            contentType: false,
+            beforeSend: function () {
+                var loading = layer.load(1, {
+					shade: [0.1,'#fff'] //0.1透明度的白色背景
+				});
+            },
+            success: function (data) {
+            	console.log(data);
+            	layer.closeAll();
+                // 当ajax请求执行成功时执行
+	            if (data.status == true) {
+	            	// 返回result对象中的status元素值为1表示数据插入成功
+	                layer.msg(data.message, {icon: 6, time: 2000});	// 使用H-ui的浮动提示框，2秒后自动消失
+					setTimeout(function() {
+						parent.location.reload();
+					}, 2000);	//2秒后对父页面执行刷新（相当于关闭了弹层同时更新了数据）
+	            } else {
+	            	// 返回result对象的status值不为1，表示数据插入失败
+	            	layer.alert(data.message+"<p>请自行刷新页面</p>", {icon: 5});
+	            	// 页面停留在这里，不再执行任何动作
+	            }
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
+    }
+</script>
+{/block}
+
+{block name="css"}
+
+{/block}

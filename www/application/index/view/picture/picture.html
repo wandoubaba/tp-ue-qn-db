@@ -1,0 +1,103 @@
+{extend name='frame/template/adminlte_index'/}
+
+{block name="bread-nav"}
+	
+{/block}
+
+{block name="main-title"}
+	{$pagetitle|default=""}
+	<small></small>
+{/block}
+
+{block name="main-content"}
+<div class="nav-tabs-custom">
+	<ul id="main-nav" class="nav nav-tabs">
+		<li class="header">空间 <i class="fa fa-arrow-right"></i> </li>
+		{volist name="bucketlist" id="vo"}
+			<li class="{if condition='$vo.bucket_default eq 1'}active{/if}">
+				<a href="#{$vo.bucket_name}" data-toggle="tab">{$vo.bucket_name}</a>
+			</li>
+		{/volist}
+	</ul>
+	<div id="main-nav-tabs" class="tab-content">
+		{volist name="bucketlist" id="vo"}
+			<div class="tab-pane {eq name='vo.bucket_default' value='1'}active{/eq}" id="{$vo.bucket_name}">
+				<div class="row">
+					<div class="col-xs-3">
+						<a href="javascript:;" onclick="modal_show_iframe('上传图片','{:url("index/picture/add",["bucket"=>$vo.bucket_name])}','')" class="btn btn-primary"><i class="fa fa-fw fa-plus-square"></i> 上传图片</a> 
+					</div>
+				</div>
+				<div class="row mt-3">
+				{volist name="vo.child" id="vo_c" mod="6" empty="没有图片"}
+					<div class="col-xs-6 col-md-4 col-lg-2">
+						<div class="panel {eq name='vo_c.picture_protected' value='1'}panel-danger{else/}panel-info{/eq}">
+							<div class="panel-heading ellipsis">
+								<span title="{$vo_c.picture_name}">
+									{$vo_c.picture_name}
+								</span>
+							</div>
+							<div class="panel-body">
+								<a href="{$vo.bucket_domain}{$vo_c.picture_key}-{$vo.bucket_style_water}" data-lightbox="qiniu-image">
+									<img class="lazy img-responsive" 
+										src="__STATIC__/img/loading-0.gif" 
+										data-src="{$vo.bucket_domain}{$vo_c.picture_key}-{$vo.bucket_style_thumb}" 
+										data-original="{$vo.bucket_domain}{$vo_c.picture_key}-{$vo.bucket_style_thumb}" 
+										alt="">
+								</a>
+							</div>
+							<div class="panel-footer ellipsis">
+								<span title="{$vo_c.picture_description}">
+									{$vo_c.picture_description}
+								</span><br/>
+								<span title="{$vo_c.create_time}">
+									{$vo_c.create_time}
+								</span><br/>
+								<span title="{$vo_c.update_time}">
+									{$vo_c.update_time}
+								</span><br/>
+								<span class="pull-right">
+									<a href="javascript:;" onclick="modal_show_iframe('编辑图片','{:url("index/picture/edit",["id"=>$vo_c.picture_id])}','')" title="编辑"><i class="fa fa-edit fa-fw"></i></a>
+									<a href="javascript:;" onclick="ajax_post_confirm('{:url("index/picture/do_picture_delete")}',{id:'{$vo_c.picture_id}'},'{$vo_c.picture_name}','删除');" title="删除"><i class="fa fa-trash fa-fw"></i></a>
+								</span>
+							</div>
+						</div>
+					</div>
+					{eq name="mod" value="5"}
+						</div><div class="row">
+					{/eq}
+				{/volist}
+				</div>
+			</div>
+		{/volist}
+		<!-- /.tab-pane -->
+	</div>
+	<!-- /.tab-content -->
+</div>
+{/block}
+
+{block name="js"}
+{js href="__STATIC__/lib/jquery-lazyload/lazyload.js"/}
+{js href="__STATIC__/lib/lightbox2/dist/js/lightbox.min.js"/}
+<script type="text/javascript">
+$(function() {
+	// 图片lazyload
+	$("img.lazy").lazyload({
+        //设置占位符，可以用img标签的src属性引入一个图片，替代未进去显示区域的待加载图片
+        // placeholder : '__STATIC__/img/loading-0.jpg',
+        // effect : "fadeIn",  //渐现，show(直接显示),fadeIn(淡入),slideDown(下拉)
+        //threshold : 180, //预加载，在图片距离屏幕180px时提前载入
+        //event: 'click',  // 事件触发时才加载，click(点击),mouseover(鼠标划过),sporty(运动的),默认为scroll（滑动）
+        //container: $("#container"), // 指定对某容器中的图片实现效果
+		//　failure_limit：2 //加载2张可见区域外的图片,lazyload默认在找到第一张不在可见区域里的图片时则不再继续加载,但当HTML容器混乱的时候可能出现可见区域内图片并没加载出来的情况container: $("#container"), // 指定对某容器中的图片实现效果
+    });
+	// 如果没有默认空间，则默认激活第1个空间
+	if(!$("#main-nav-tabs .tab-pane.active")==false) {
+		$("#main-nav a:first").tab("show");
+	}
+});
+</script>
+{/block}
+
+{block name="css"}
+{css href="__STATIC__/lib/lightbox2/dist/css/lightbox.min.css"/}
+{/block}

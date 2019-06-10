@@ -1,0 +1,76 @@
+{extend name='frame/template/adminlte_index'/}
+
+{block name="bread-nav"}
+	
+{/block}
+
+{block name="main-title"}
+	{$pagetitle|default=""}
+	<small></small>
+{/block}
+
+{block name="main-content"}
+<div class="alert alert-warning alert-dismissible"">
+	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+	<i class="icon fa fa-bell"></i> 提示：在电脑上操作会更舒服一些。
+</div>
+<div class="box">
+	<div class="box-header">
+		<span> 
+			<a href="javascript:;" onclick="modal_show_iframe('添加存储空间','{:url("index/picture/bucket_add")}',90)" class="btn btn-primary"><i class="fa fa-fw fa-plus-square"></i> 新增数据</a> 
+		</span>
+		<span class="pull-right">共有数据：<strong>{$count}</strong> 条</span>
+	</div>
+	<div class="box-body" style="overflow-y: hidden;overflow-x: scroll;">
+		<table class="table table-bordered table-strited table-hover text-nowrap">
+			<thead>
+				<tr>
+					<th scope="col" colspan="8">存储空间</th>
+				</tr>
+				<tr>
+					<th>操作</th>
+					<th>名称</th>
+					<th>域名</th>
+					<th>描述</th>
+					<th>默认</th>
+					<th>缩略图样式</th>
+					<th>原图样式</th>
+					<th>原图水印样式</th>
+					<th>适应宽度样式</th>
+					<th>适应高度样式</th>
+				</tr>
+			</thead>
+			<tbody>
+			{volist name='list' id='vo'}
+				<tr title="{$vo.bucket_description}">
+					<td class="td-manage">
+						<a title="编辑" href="javascript:;" onclick="modal_show_iframe('编辑存储空间','{:url("index/picture/bucket_edit",["name"=>$vo.bucket_name])}','')"><i class="fa fa-fw fa-pencil-square-o"></i></a> 
+						<a title="删除" href="javascript:;" onclick="ajax_post_confirm('{:url("index/picture/do_bucket_delete")}',{name:'{$vo.bucket_name}'},'{$vo.bucket_name}','删除');"><i class="fa fa-fw fa-trash-o"></i></a>
+					</td>
+					<td><span class="name">{$vo.bucket_name}</span></td>
+					<td>{$vo.bucket_domain}</td>
+					<td>{$vo.bucket_description}</td>
+					<td>{$vo.bucket_default}</td>
+					<td>{$vo.bucket_style_thumb}</td>
+					<td>{$vo.bucket_style_original}</td>
+					<td>{$vo.bucket_style_water}</td>
+					<td>{$vo.bucket_style_fixwidth}</td>
+					<td>{$vo.bucket_style_fixheight}</td>
+				</tr>
+			{/volist}
+			</tbody>
+		</table>
+	</div>
+	<div class="box-footer">
+		<div class="text-warning text-center">在电脑上操作会更舒服一些。</div>
+	</div>
+</div>
+{/block}
+
+{block name="js"}
+
+{/block}
+
+{block name="css"}
+
+{/block}

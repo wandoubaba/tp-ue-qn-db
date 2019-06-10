@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- meta -->
+  {include file="frame/include/meta"/}
+  <!-- title, keywords, description -->
+  {include file="frame/include/seo"/}
+  <!-- bootstrap3 css -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" rel="stylesheet">
+  <!-- admin lite css -->
+  <link href="https://cdn.bootcss.com/admin-lte/2.4.10/css/AdminLTE.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/admin-lte/2.4.10/css/skins/_all-skins.min.css" rel="stylesheet">
+  <!-- browser compatibility -->
+  {include file="frame/include/compatibility"/}
+  <!-- css icons -->
+  <link href="http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="https://cdn.bootcss.com/ionicons/4.5.6/css/ionicons.min.css" rel="stylesheet">
+  <!-- fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic" rel="stylesheet">
+  <!-- common css -->
+  <link href="__STATIC__/css/common.admin.css" rel="stylesheet">
+  <!-- css -->
+  {block name="css"}
+  {/block}
+  <!-- 页面完全加载前显示“loading”，用到font-awesome字体 -->
+  <script type="text/javascript" src="__STATIC__/js/loading.in.head.js"></script>
+</head>
+<body class="hold-transition skin-blue sidebar-mini">
+  <div class="wrapper">
+
+    <header class="main-header">
+
+      <!-- Logo -->
+      {include file="frame/include/segment-logo"/}
+
+      <!-- Header Navbar: style can be found in header.less -->
+      <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+          <span class="sr-only">显示/隐藏导航菜单</span>
+        </a>
+        <!-- Navbar Right Menu -->
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <li>
+              <a href="javascript:;" onclick="window.location.reload();" title="刷新" ><i class="fa fa-refresh"></i></a>  
+            </li>
+          </ul>
+        </div>
+
+      </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+      <!-- sidebar: style can be found in sidebar.less -->
+      <section class="sidebar">
+        {include file="frame/include/segment-menu"/}
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1 class="hidden-xs hidden-sm">
+          {block name="main-title"}
+          后台标题
+          <small>副标题</small>
+          {/block}
+        </h1>
+        <ol class="breadcrumb">
+          <li><a href="{:url('admin/index/index')}"><i class="fa fa-home"></i> 首页</a></li>
+          {block name="bread-nav"}
+          {/block}
+          {notempty name="pagetitle"}<li class="active">{$pagetitle|default=""}</li>{/notempty}
+        </ol>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        {block name="main-content"}
+        <!-- 页面内容写这里 -->
+        {/block}
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+    {include file="frame/include/segment-footer"/}
+
+    </div>
+  <!-- ./wrapper -->
+
+  <!-- jQuery 3 -->
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <!-- Bootstrap 3 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  <!-- FastClick -->
+  <script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
+  <!-- Sparkline -->
+  <script src="https://cdn.bootcss.com/jquery-sparklines/2.1.2/jquery.sparkline.min.js"></script>
+  <!-- AdminLTE App -->
+  <script src="https://cdn.bootcss.com/admin-lte/2.4.10/js/adminlte.min.js"></script>
+  <!-- layer -->
+  <script src="__STATIC__/lib/layer/2.4/layer.js"></script>
+  <!-- common -->
+  <script src="__STATIC__/js/common.admin.js"></script>
+  <!-- script -->
+  {block name="js"}
+
+  {/block}
+</body>
+</html>

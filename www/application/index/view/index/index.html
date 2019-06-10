@@ -1,0 +1,58 @@
+{extend name='frame/template/adminlte_index'/}
+
+{block name="bread-nav"}
+
+{/block}
+
+{block name="main-title"}
+{$pagetitle|default=""}
+<small></small>
+{/block}
+
+{block name="main-content"}
+<div class="box">
+    <div class="box-header with-border">
+        Ueditor结合上传图片到七牛云的完整演示
+    </div>
+    <form method="post" accept-charset="utf-8">
+        <div class="box-body">
+            <div class="form-group">
+                <textarea id="content1a" style="width:100%; height:300px;"></textarea>    
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" value="从Ueditor取值" onclick="getVal();"/>
+            </div>
+            <div>
+                <div>
+                    应该直接把显示值保存到数据库中！
+                </div>
+                原文值：<span id="show_value1"></span><br/>
+                显示值：<span id="show_value2"></span><br/>
+            </div>
+        </div>
+    </form>
+    <div class="box-footer">
+        <div class="text-warning text-center">在电脑上操作会更舒服一些。</div>
+    </div>
+</div>
+{/block}
+
+{block name="js"}
+<!-- 配置文件 -->
+<script type="text/javascript" src="__STATIC__/lib/ueditor/utf8-php/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="__STATIC__/lib/ueditor/utf8-php/ueditor.all.js"></script>
+<!--富文本编辑器开始-->
+<script type="text/javascript">
+    var ue = UE.getEditor('content1a');
+    function getVal() {
+        $("#show_value1").html(HtmlUtil.htmlEncode(ue.getContent()));
+        $("#show_value2").html(ue.getContent());
+    }
+</script>
+<!--富文本编辑器结束-->
+{/block}
+
+{block name="css"}
+
+{/block}

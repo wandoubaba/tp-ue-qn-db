@@ -1,0 +1,100 @@
+{extend name="frame/template/bootstrap_frame"/}
+{block name="body"}
+<form method="post" class="form-horizontal">
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>空间名称(只读)：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_name}" type="text" class="form-control" id="bucket_name" name="bucket_name" readonly="true">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>空间域名：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_domain}" type="text" class="form-control" placeholder="空间域名，http://.../形式，以/结尾" id="bucket_domain" name="bucket_domain" rangelength="[4,100]" required>
+		</div>
+	</div>		
+	<div class="form-group">
+		<label class="control-label col-sm-3">描述：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_description}" type="text" class="form-control" placeholder="文字描述" id="bucket_description" name="bucket_description" maxlength="100">
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3">默认空间：</label>
+		<div class="col-sm-9">
+			<input {eq name="bucket.bucket_default" value="1"} checked="true" {/eq} type="checkbox" id="bucket_default" name="bucket_default" />
+				勾选为默认，只可以有1个默认空间
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>缩略图样式：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_style_thumb}" type="text" class="form-control" placeholder="缩略图样式名" id="bucket_style_thumb" name="bucket_style_thumb" rangelength="[3,100]" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>原图样式：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_style_original}" type="text" class="form-control" placeholder="原图样式名" id="bucket_style_original" name="bucket_style_original" rangelength="[3,100]" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>原图水印样式：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_style_water}" type="text" class="form-control" placeholder="原图加水印样式名" id="bucket_style_water" name="bucket_style_water" rangelength="[3,100]" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>适应宽度样式：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_style_fixwidth}" type="text" class="form-control" placeholder="适应宽度样式名" id="bucket_style_fixwidth" name="bucket_style_fixwidth" rangelength="[3,100]" required>
+		</div>
+	</div>
+	<div class="form-group">
+		<label class="control-label col-sm-3"><span class="text-red">*</span>适应高度样式：</label>
+		<div class="col-sm-9">
+			<input value="{$bucket.bucket_style_fixheight}" type="text" class="form-control" placeholder="适应高度样式名" id="bucket_style_fixheight" name="bucket_style_fixheight" rangelength="[3,100]" required>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-9 col-sm-offset-3">
+			<button type="submit" class="btn btn-success disabled" disabled="true">提交数据</button>
+		</div>
+	</div>
+</form>
+{/block}
+
+{block name="js"}
+{include file="frame/include/js-jquery-validation"/}
+<script type="text/javascript">
+	$(function() {
+		// 初始化checkbox的icheck样式
+		$('input[type="checkbox"],input[type="radio"]').iCheck({
+			checkboxClass: 'icheckbox_minimal-blue',
+			radioClass   : 'iradio_minimal-blue'
+	    })
+
+		// 只有当表单中有数据变化时，提交按钮才可用
+		$("form").children().bind('input propertychange ifChecked ifUnchecked',function() {
+			$(":submit").removeClass('disabled').removeAttr('disabled');
+		});
+
+		$("form").validate({
+			rules: {
+				bucket_domain: {
+					url: true
+				}
+			},
+			submitHandler: function(form) {
+				// 当验证通过时执行ajax提交
+				ajax_post("{:url('index/picture/do_bucket_edit')}",$("form").serialize());
+			}
+		});
+	});
+</script>
+{/block}
+
+{block name="css"}
+
+{/block}
